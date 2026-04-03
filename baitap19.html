@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Game</title>
+
+<style>
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #ec5383;
+  height: 70px;
+  
+}
+.link {
+  text-decoration: none;
+  color: #f4f4f4;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.link:hover{
+  text-decoration: dashed;
+  border-bottom: 2px solid rgb(184, 61, 61) ;
+  color: rgb(178, 56, 56);
+}
+/* --------------------------- */
+body {
+  text-align: center;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+/* GRID */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px;
+}
+
+/* MOBILE */
+@media(max-width: 600px){
+  .game-board {
+    grid-template-columns: repeat(2, 100px);
+  }
+}
+
+/* CARD */
+.card {
+  width: 100px;
+  height: 120px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.card.flip .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* FRONT / BACK */
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-front {
+  background: #334155;
+}
+
+.card-back {
+  background: #22c55e;
+  transform: rotateY(180deg);
+  font-size: 30px;
+}
+
+/* BUTTON */
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #38bdf8;
+  color: black;
+  cursor: pointer;
+}
+
+/* COUNTDOWN */
+#countdown {
+  background: black;
+  padding: 5px 10px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+/* danger */
+.danger {
+  color: yellow;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="link">Home</a>
+    <a href="diemdanh.html" class="link">điểm danh</a>
+    <a href="lythuyet.html" class="link">Lý thuyết</a>
+    <a href="baitap18.html" class="link">bài tập 18</a>
+  </div>
+<h1>🧠 Memory Game</h1>
+<p>Số lượt: <span id="moves">0</span></p>
+
+<div id="countdown">10:00</div>
+
+<div class="game-board" id="board"></div>
+
+<button onclick="startGame()">🔄 Reset</button>
+
+<script>
+// ===== MEMORY GAME =====
+const board = document.getElementById("board");
+const movesEl = document.getElementById("moves");
+
+let cards = ["🍎","🍌","🍇","🍓","🍎","🍌","🍇","🍓"];
+
+let firstCard = null;
+let secondCard = null;
+let lock = false;
+let moves = 0;
+
+function shuffle(array){
+    return array.sort(() => Math.random() - 0.5);
+}
+
+function startGame(){
+    board.innerHTML = "";
+    cards = shuffle(cards);
+    moves = 0;
+    movesEl.textContent = moves;
+
+    cards.forEach((emoji) => {
+        let card = document.createElement("div");
+        card.classList.add("card");
+
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="card-front"></div>
+                <div class="card-back">${emoji}</div>
+            </div>
+        `;
+
+        card.addEventListener("click", () => flipCard(card, emoji));
+        board.appendChild(card);
+    });
+
+    startCountdown(); // reset countdown khi chơi lại
+}
+
+function flipCard(card, emoji){
+    if (lock || card.classList.contains("flip")) return;
+
+    card.classList.add("flip");
+
+    if (!firstCard){
+        firstCard = {card, emoji};
+    } else {
+        secondCard = {card, emoji};
+        moves++;
+        movesEl.textContent = moves;
+        checkMatch();
+    }
+}
+
+function checkMatch(){
+    if (firstCard.emoji === secondCard.emoji){
+        resetTurn();
+
+        if (document.querySelectorAll(".flip").length === cards.length){
+            setTimeout(() => alert("🎉 Bạn thắng!"), 300);
+        }
+
+    } else {
+        lock = true;
+        setTimeout(() => {
+            firstCard.card.classList.remove("flip");
+            secondCard.card.classList.remove("flip");
+            resetTurn();
+        }, 800);
+    }
+}
+
+function resetTurn(){
+    firstCard = null;
+    secondCard = null;
+    lock = false;
+}
+
+// ===== COUNTDOWN REAL-TIME =====
+let timer;
+function startCountdown(){
+    clearInterval(timer);
+
+    let endTime = Date.now() + 10 * 60 * 1000;
+
+    timer = setInterval(() => {
+        let remaining = endTime - Date.now();
+
+        if (remaining <= 0) {
+            clearInterval(timer);
+            document.getElementById("countdown").textContent = "Hết giờ!";
+            alert("⏰ Hết thời gian!");
+            return;
+        }
+
+        let totalSeconds = Math.floor(remaining / 1000);
+        let minutes = Math.floor(totalSeconds / 60);
+        let seconds = totalSeconds % 60;
+
+        let el = document.getElementById("countdown");
+
+        el.textContent =
+            `${minutes}:${seconds < 10 ? "0"+seconds : seconds}`;
+
+        if (totalSeconds <= 60) {
+            el.classList.add("danger");
+        }
+
+    }, 1000);
+}
+
+// start game
+startGame();
+
+</script>
+
+</body>
+</html>

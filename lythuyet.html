@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Lý thuyết</title>
+<style>
+body { font-family: Arial; padding: 20px; line-height: 1.6; }
+h2 { color: #e91e63; }
+code { background: #f4f4f4; padding: 5px; }
+</style>
+</head>
+<style>
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #8d3131;
+  height: 70px;
+  
+}
+.link {
+  text-decoration: none;
+  color: #f4f4f4;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.link:hover{
+  text-decoration: dashed;
+  border-bottom: 2px solid rgb(88, 188, 58);
+  color: rgb(88, 188, 58);
+}
+
+</style>
+
+<body>
+  <div class="container">
+    <a href="index.html" class="link">Home</a>
+    <a href="diemdanh.html" class="link">điểm danh</a>
+    <a href="baitap18.html" class="link">Bài tập 18</a>
+    <a href="baitap19.html" class="link">bài tập 19</a>
+  </div>
+  
+  
+  <h1>PHẦN LÝ THUYẾT</h1>
+
+<h2>1. position: absolute vs relative</h2>
+<p>
+- relative: phần tử giữ vị trí ban đầu, nhưng có thể dịch chuyển.
+<br>
+- absolute: phần tử thoát khỏi luồng và định vị theo phần tử cha gần nhất có position.
+</p>
+
+<pre>
+.parent { position: relative; }
+.child { position: absolute; top: 0; right: 0; }
+</pre>
+
+<p>
+Responsive: absolute dễ bị lệch trên màn nhỏ → cần dùng flex/grid.
+</p>
+
+---
+
+<h2>2. Domain & Hosting</h2>
+<p>
+Quy trình:
+<br>1. Mua domain
+<br>2. Thuê hosting
+<br>3. Trỏ DNS
+<br>4. Upload code
+</p>
+
+<p>
+DNS: chuyển domain → IP server.
+</p>
+
+<p>
+Công cụ:
+<br>- GitHub Pages
+<br>- Netlify
+</p>
+
+<p>
+Rủi ro:
+<br>- Không bật HTTPS
+<br>- Lộ API key
+</p>
+
+---
+
+<h2>3. var vs let vs const</h2>
+
+<pre>
+var a = 1;
+let b = 2;
+const c = 3;
+</pre>
+
+<p>
+- var: function scope, hoisting
+<br>- let: block scope
+<br>- const: không đổi
+</p>
+
+<p>Lỗi thường gặp:</p>
+
+<pre>
+console.log(a);
+let a = 5; // lỗi
+</pre>
+
+<p>Debug: dùng Chrome DevTools (F12 → Console)</p>
+
+---
+
+<h2>4. Event Delegation</h2>
+
+<pre>
+document.getElementById("list").addEventListener("click", function(e){
+  if(e.target.tagName === "LI"){
+    alert(e.target.textContent);
+  }
+});
+</pre>
+
+<p>
+Lợi ích:
+<br>- tối ưu hiệu suất
+<br>- xử lý list động
+</p>
+
+</body>
+</html>

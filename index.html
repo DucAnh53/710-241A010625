@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container">
+        <div id="header">
+            <div class="taskbar">
+                <a href="" class="logo-text">
+                    <img src="logo-dark.webp" alt="Logo" class="logo">
+                    <span class="text">MuseVideo</span>
+                </a>
+                <li class="list">
+                    
+                    <a href="lythuyet.html" class = "link_list">Lý Thuyết</a>
+                    <a href="diemdanh.html" class = "link_list">Điểm danh</a>
+                    <a href="baitap18.html" class = "link_list">Bài 18</a>
+                    <a href="baitap19.html" class = "link_list">Bài 19</a>
+                </li>  
+
+                <!-- Nút đăng nhập -->
+                <button id="loginBtn" class="btn-login">Login</button>
+
+                
+            </div>
+            <!-- SEARCH -->
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Tìm sản phẩm...">
+            </div>
+
+            <h2 class="title">
+                🔥 FLASH SALE:
+                <div id="countdown"></div>
+                <div id="clock"></div>
+                <div id="clock"></div>
+                
+            </h2>
+
+            <!-- DANH SÁCH SẢN PHẨM -->
+            <div class="product-list" id="productList"></div>
+            <p id="notfound"></p>
+        </div>
+                <!-- bảng đăng nhập -->
+        <div id="overlay">
+                    <div class="modal">
+                        <h2>Login</h2>
+                        <div class="form-box">
+                            <div class="inputbox">
+                                <input type="email" id="email" required placeholder=" ">
+                                <label for="">Email</label>
+                            </div>
+                            <div class="inputbox">
+                                <input type="password" id="password" required placeholder=" ">
+                                <label for="">Password</label>
+                            </div>
+                            <div class="forget">
+                                <label><input type="checkbox" id="agree"> Đồng ý điều khoản</label>
+                            </div>                        
+                            <button type="button" id="login-box" class="btn-register">Đăng ký</button>
+
+                        </div>
+                    </div>
+        </div>
+        
+    </div>
+
+    <script src="main2.js"></script>
+</body>
+</html>
